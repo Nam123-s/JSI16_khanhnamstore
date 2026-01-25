@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-inner">
+            <div class="logo">MyShop</div>
+            <nav>
+                <a class="nav-link" href="Login/login.html">Login</a>
+                <a class="nav-link" href="./index.html">Shop</a>
+                <!-- <i class="fas fa-shopping-cart nav-icon" id="order-icon" title="Đơn hàng"></i> -->
+                <i class="fas fa-user nav-icon active" id="Admin" title="admin"></i>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Admin Panel</h1>
+        <p>Welcome to the admin dashboard. Here you can manage products, orders, and more.</p>
+        <div class="admin-actions" style="display: flex; justify-content: flex-start; gap: 20px; margin-top: 50px;">
+            <button id="create-product-action" style="padding: 15px 30px; background-color: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-plus"></i>
+                Create
+            </button>
+            <button id="manage-orders-action" style="padding: 15px 30px; background-color: var(--nav); color: white; border: none; border-radius: 8px; font-size: 1.2em; cursor: pointer; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-shopping-cart"></i>
+                Manage Orders
+            </button>
+            <!-- Add more admin actions here -->
+        </div>
+    </main>
+
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sản phẩm đã mua</h2>
+            <div id="purchased-list"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">MyShop</div>
+                <p class="footer-description">Your one-stop shop for amazing products. Discover quality items at great prices.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="./index.html">Shop</a>
+                    <a href="Login/login.html">Login</a>
+                    <a href="createProducts.html">Create Product</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MyShop. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--accent);"></i> by Your Team</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('create-product-action').addEventListener('click', () => {
+            location.href = 'createProducts.html';
+        });
+
+        document.getElementById('manage-orders-action').addEventListener('click', () => {
+            const modal = document.getElementById('order-modal');
+            const list = document.getElementById('purchased-list');
+            const purchased = JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+            list.innerHTML = purchased.map(p => `
+                <div class="product-card" style="flex-direction:row; padding:10px;">
+                    <img src="${p.image}" alt="${p.title}" style="width:50px; height:50px; margin-right:10px;">
+                    <div>
+                        <h4 style="margin:0; font-size:14px;">${p.title}</h4>
+                        <p style="margin:0; color:var(--accent);">${p.price} USD</p>
+                    </div>
+                </div>
+            `).join('');
+            modal.style.display = 'block';
+        });
+
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('order-modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == document.getElementById('order-modal')) {
+                document.getElementById('order-modal').style.display = 'none';
+            }
+        });
+
+        // Admin icon is already active, no need for redirect
+    </script>
+<script type="module" src="addSanpham.js"></script>
+<script type="module" src="admin.js"></script>
+</body>
+</html>

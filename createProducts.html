@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo sản phẩm</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-inner">
+            <div class="logo">MyShop</div>
+            <nav>
+                <a class="nav-link" href="Login/login.html">Login</a>
+                <a class="nav-link" href="./index.html">Shop</a>
+                <i class="fas fa-shopping-cart nav-icon" id="order-icon" title="Đơn hàng"></i>
+                <!-- <i class="fas fa-user nav-icon" id="Admin" title="admin"></i> -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Tạo sản phẩm mới</h1>
+            <p>Thêm sản phẩm vào cửa hàng của bạn.</p>
+        </section>
+
+        <div class="login-container" style="max-width: 600px; margin: 0 auto;">
+            <form id="create-product-form" class="login-form" enctype="multipart/form-data" style="padding: 40px;">
+                <h2 style="color: var(--nav); margin-bottom: 20px;">Thông tin sản phẩm</h2>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="product-image" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--nav);">Hình ảnh sản phẩm:</label>
+                    <input type="file" id="product-image" accept="image/*" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px;">
+                    <!-- <img id="image-preview" src="" alt="Preview" style="max-width: 200px; max-height: 200px; margin-top: 10px; display: none; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);"> -->
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="product-title" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--nav);">Tiêu đề:</label>
+                    <input type="text" id="product-title" placeholder="Nhập tiêu đề sản phẩm" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent)'; this.style.boxShadow='0 0 5px rgba(255, 107, 53, 0.5)';" onblur="this.style.borderColor='#ddd'; this.style.boxShadow='none';">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="product-price" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--nav);">Giá:</label>
+                    <input type="number" id="product-price" placeholder="Nhập giá sản phẩm (USD)" step="0.01" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; transition: border-color 0.3s;" onfocus="this.style.borderColor='var(--accent)'; this.style.boxShadow='0 0 5px rgba(255, 107, 53, 0.5)';" onblur="this.style.borderColor='#ddd'; this.style.boxShadow='none';">
+                </div>
+                
+                <div style="margin-bottom: 20px;">
+                    <label for="product-description" style="display: block; margin-bottom: 8px; font-weight: 600; color: var(--nav);">Mô tả:</label>
+                    <textarea id="product-description" placeholder="Nhập mô tả sản phẩm" rows="4" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; transition: border-color 0.3s; resize: vertical;" onfocus="this.style.borderColor='var(--accent)'; this.style.boxShadow='0 0 5px rgba(255, 107, 53, 0.5)';" onblur="this.style.borderColor='#ddd'; this.style.boxShadow='none';"></textarea>
+                </div>
+                
+                <button type="submit" class="buy-btn" style="width: 100%; padding: 12px; font-size: 16px;">Tạo sản phẩm</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('product-image').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('image-preview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+    //  document.getElementById('create-product-form').addEventListener('submit', function(e) {
+    //         e.preventDefault();
+    //         const fileInput = document.getElementById('product-image');
+    //         const title = document.getElementById('product-title').value;
+    //         const price = parseFloat(document.getElementById('product-price').value);
+    //         const description = document.getElementById('product-description').value;
+
+    //         if (fileInput.files.length === 0) {
+    //             alert('Vui lòng chọn hình ảnh!');
+    //             return;
+    //         }
+
+    //         alert('Sản phẩm đã được tạo thành công!');
+    //         location.href = 'index.html';
+    //     });   
+
+        // Copy the event listeners from index.html for the icons
+        document.getElementById('order-icon').addEventListener('click', () => {
+            location.href = 'index.html';
+        });
+
+        // document.getElementById('Admin').addEventListener('click', () => {
+        //     location.href = 'admin.html';
+        // });
+    </script>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">MyShop</div>
+                <p class="footer-description">Your one-stop shop for amazing products. Discover quality items at great prices.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="./index.html">Shop</a>
+                    <a href="Login/login.html">Login</a>
+                    <a href="createProducts.html">Create Product</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MyShop. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--accent);"></i> by Your Team</p>
+        </div>
+    </footer>
+
+</body>
+<script type="module" src="addSanpham.js"></script>
+<script type="module" src="admin.js"></script>
+</html></content>
+

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết Bút bi</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-inner">
+            <div class="logo">MyShop</div>
+            <nav>
+                <a class="nav-link" href="Login/login.html">Login</a>
+                <a class="nav-link active" href="./index.html">Shop</a>
+                <!-- <i class="fas fa-plus nav-icon" id="create-product-icon" title="Tạo sản phẩm"></i> -->
+                <i class="fas fa-shopping-cart nav-icon" id="order-icon" title="Đơn hàng"></i>
+                <!-- <i class="fas fa-user nav-icon" id="Admin" title="admin"></i> -->
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="detail-container">
+            <a href="./index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Quay lại Shop</a>
+            <div class="detail-flex">
+                <div class="product-card detail-card">
+                    <div class="product-media">
+                        <img src="" alt="" class="detail-img">
+                    </div>
+                    <div class="product-body">
+                        <h2 class="product-title detail-title">Name</h2>
+                        <div class="product-price detail-price">Price: </div>
+                        <p class="detail-description"><strong>Description:</strong> <span></span></p>
+                        <button class="buy-btn detail-buy-btn">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Sản phẩm đã mua</h2>
+            <div id="purchased-list"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+        import { getFirestore, collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyBOrcd9E7Efk1FYFQ7O2roVyElAMZi1MDM",
+          authDomain: "pnl-jsi16.firebaseapp.com",
+          projectId: "pnl-jsi16",
+          storageBucket: "pnl-jsi16.firebasestorage.app",
+          messagingSenderId: "912897970465",
+          appId: "1:912897970465:web:0a7a7b66ef57603a922e60"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        const selectedProduct = JSON.parse(localStorage.getItem('selectedProduct'));
+        if (selectedProduct && selectedProduct.id) {
+            const q = query(collection(db, "products"), where("__name__", "==", selectedProduct.id));
+            
+            getDocs(q).then(querySnapshot => {
+                if (!querySnapshot.empty) {
+                    const doc = querySnapshot.docs[0];
+                    const product = doc.data();
+                    
+                    document.querySelector('.detail-img').src = product.image;
+                    document.querySelector('.detail-img').alt = product.title;
+                    document.querySelector('.detail-title').textContent = product.title;
+                    document.querySelector('.detail-price').textContent = `Giá: ${product.price} USD`;
+                    document.querySelector('.detail-description span').textContent = product.description;
+                } else {
+                    document.querySelector('.detail-title').textContent = 'Sản phẩm không tồn tại!';
+                }
+            }).catch(() => {
+                document.querySelector('.detail-title').textContent = 'Không thể tải dữ liệu sản phẩm!';
+            });
+        } else {
+            document.querySelector('.detail-title').textContent = 'Sản phẩm không tồn tại!';
+        }
+    </script>
+    <script>
+        document.querySelector('.detail-buy-btn').addEventListener('click', () => {
+            alert('Sản phẩm đã được mua!');
+        });
+        
+
+        // document.getElementById('create-product-icon').addEventListener('click', () => {
+        //     location.href = 'createProducts.html';
+        // });
+
+        document.getElementById('order-icon').addEventListener('click', () => {
+            const modal = document.getElementById('order-modal');
+            const list = document.getElementById('purchased-list');
+            const purchased = JSON.parse(localStorage.getItem('purchasedProducts')) || [];
+            list.innerHTML = purchased.map(p => `
+                <div class="product-card" style="flex-direction:row; padding:10px;">
+                    <img src="${p.image}" alt="${p.title}" style="width:50px; height:50px; margin-right:10px;">
+                    <div>
+                        <h4 style="margin:0; font-size:14px;">${p.title}</h4>
+                        <p style="margin:0; color:var(--accent);">${p.price} USD</p>
+                    </div>
+                </div>
+            `).join('');
+            modal.style.display = 'block';
+        });
+
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('order-modal').style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == document.getElementById('order-modal')) {
+                document.getElementById('order-modal').style.display = 'none';
+            }
+        });
+    </script>
+    <script type="module" src="admin.js"></script>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">MyShop</div>
+                <p class="footer-description">Your one-stop shop for amazing products. Discover quality items at great prices.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <div class="footer-links">
+                    <a href="./index.html">Shop</a>
+                    <a href="Login/login.html">Login</a>
+                    <a href="createProducts.html">Create Product</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 MyShop. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--accent);"></i> by Your Team</p>
+        </div>
+    </footer>
+
+</body>
+</html>
