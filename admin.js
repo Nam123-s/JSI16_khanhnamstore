@@ -69,7 +69,7 @@ window.addEventListener("load", async () => {
       }
     } else {
       console.log("User doc does not exist");
-      // If email is admin@example.com, create the doc with admin role
+      // kiểm tra nếu email là admin
       if (user.email === "admin@example.com") {
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,

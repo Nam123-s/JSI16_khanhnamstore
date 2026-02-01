@@ -39,7 +39,7 @@ function handleRegister(event) {
     role_id ="user"
   }
 
-  // Check fields empty
+  // Check fields emptym
   if (!username || !email || !password || !confirmPassword) {
     alert("Vui lòng điền đủ các trường");
     return;
